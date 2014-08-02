@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html ng-app="store">
+    <head>       
+        <title>Hello World</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script type="text/javascript" src="js/sha256.js"></script>
+        <script type="text/javascript" src="js/xml2json.js"></script> 
+    </head>
+    <body>
+        <!--div ng-controller="StoreController as store">
+            <div ng-hide="store.product.soldOut">
+                <h2>{{store.product.name}}</h2>
+                <h3 class="pull-right">{{store.product.price | currency}}</h3>                
+                <button ng-show="store.product.canPurchase">Add to Cart</button>
+
+
+
+                <section ng-controller="PanelController as panel">
+                    <ul class="nav nav-pills">
+                        <li ng-class="{active:panel.isSelected(1)}"><a ng-click="panel.selectTab(1)">Description</a></li>
+                        <li ng-class="{active:panel.isSelected(2)}"><a ng-click="panel.selectTab(2)">Specifications</a></li>
+                        <li ng-class="{active:panel.isSelected(3)}"><a ng-click="panel.selectTab(3)">Others</a></li>
+                    </ul> 
+
+                    <div class="panel" ng-show="panel.isSelected(1)">
+                        <h4>Description</h4>
+                        <p>{{store.product.description}}</p>
+                    </div>
+
+                    <div class="panel" ng-show="panel.isSelected(2)">
+                        <h4>Specifications</h4>
+                        <blockquote>Not yet</blockquote>
+                    </div>
+
+                    <div class="panel" ng-show="panel.isSelected(3)">
+                        <h4>Reviews</h4>
+                        <blockquote>Not yet</blockquote>
+                    </div>           
+                </section>
+
+                
+            </div>
+        </div-->
+
+        <div ng-controller="AmpacheController">
+                {{dataSet.root.auth.__cdata}}
+        </div>
+        
+
+        
+        <script type="text/javascript" src="angular/angular.js"></script>        
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/ampache.js"></script>        
+    </body>
+</html>
