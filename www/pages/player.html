@@ -1,0 +1,19 @@
+<div>
+    <nav>
+        <button class="control prev button icon ion-skip-backward" ng-click="player.previous()"></button>
+        <button class="control play button icon ion-play" ng-click="player.play()" ng-hide="player.playing"></button>
+        <button class="control pause button icon ion-pause" ng-click="player.pause()" ng-show="player.playing"></button>
+        <button class="control next button icon ion-skip-forward" ng-click="player.next()"></button>
+    </nav>
+    
+
+    <section class="library">
+        <h1>Music Library</h1>
+        <ul class="albums">
+            <li class="album current" ng-repeat="song in songs">
+                <button class="button icon ion-plus-round" ng-click="player.playlist.add(song)"></button>
+                <span class="album-title">{{song.title}}</span>                        
+            </li>
+        </ul>
+    </section>
+</div>

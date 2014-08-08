@@ -22,6 +22,7 @@
         <title>Hello World</title>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
         <script type="text/javascript" src="js/sha256.js"></script>
         <script type="text/javascript" src="js/xml2json.js"></script> 
     </head>
@@ -60,15 +61,25 @@
                 
             </div>
         </div-->
+        <header class="header">
+            <a href="#login" class="button">Login</a>
+            <a href="#player" class="button">Player</a>
+            <a href="#about" class="button">About</a>    
+        </header>
+        
 
-        <div ng-controller="AmpacheController">
-                {{dataSet.root.auth.__cdata}}
+        <div ng-view>
+            <!-- Page Templates goes here-->
         </div>
-        
 
+        <footer class="footer">
+            <a href="#" class="button">Home</a>
+        </footer>
+                
         
-        <script type="text/javascript" src="angular/angular.js"></script>        
+        <script type="text/javascript" src="angular/angular.js"></script> 
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>       
         <script type="text/javascript" src="js/app.js"></script>
-        <script type="text/javascript" src="js/ampache.js"></script>        
+        <script type="text/javascript" src="js/ampache.js"></script>                
     </body>
 </html>
