@@ -27,18 +27,24 @@ var app = angular.module('ampache',['ngRoute']);
         
     });
 
-    app.controller('mainController', function($scope, sharedResources){
-        $scope.shared = sharedResources;
+    app.controller('mainController', function($scope){
         $scope.message = "HOME";
-
-        console.log($scope.shared.isLoggedin);
     });
 
-    app.controller('loginController', function($scope){
+    app.controller('loginController', function($scope, dataSource, dataFormatter, sharedData){
         $scope.message = "LOGIN";
 
         $scope.login = function(){
-            console.log($scope.username);
+
+            //Login callback
+            loginCallback = function(data){
+                 $scope.auth = dataFormatter.auth(data);
+                 sharedData.set($scope.auth);
+            };
+
+
+            dataSource.login($scope.username, $scope.password, loginCallback);
+            
         };
     });
 
@@ -46,29 +52,57 @@ var app = angular.module('ampache',['ngRoute']);
         $scope.message = "ABOUT";
     });
 
-    app.service('sharedResources', function(){
+    app.factory('sharedData', function(){
+        var sdata = {};
 
+        function set(data){
+            sdata = data;
+        }
+
+        function get(){
+            return sdata;
+        }
+        return {
+            set : set,
+            get : get
+        };
+        
+        
 
     });
 
     app.factory('dataSource', ['$http',function($http){
   
     var time = Math.floor(new Date().getTime() / 1000);
-    var key = sha256('root');
-    var passphrase = sha256(time + key);
 
-    var url = 'http://devel.io/server/xml.server.php';
-    var config = {
-        action: 'handshake',
-        auth: passphrase,
-        timestamp: time,
-        version: 370001,
-        user: 'admin',
-
+    var key = function(password){
+        return sha256(password);
     };
 
+    var passphrase = function(password){
+        return sha256(time + key(password));
+    };
+
+    var url = 'http://devel.io/server/xml.server.php';
+
     return {
-       get: function(callback){
+        login: function(username, password, callback){
+            $http.get(
+                'http://devel.io/server/xml.server.php?action=handshake&auth='+passphrase(password)+'&timestamp='+time+'&version=370001&user='+username,
+                {transformResponse: function(data) {
+                    // console.log(data);
+                    var x2js = new X2JS();
+                    var json = x2js.xml_str2json( data );
+                    return json;
+                    }
+                }
+            ).success(function(data, status){
+                callback(data);
+            });
+            
+        },
+
+        get: function(callback){
             $http.get(
                 // 'http://devel.io/server/xml.server.php?action=handshake&auth='+passphrase+'&timestamp='+time+'&version=370001&user=admin',
                 // 'http://devel.io/server/xml.server.php?action=handshake&auth=172726c763967f83b2776502263b8245',
@@ -76,7 +110,7 @@ var app = angular.module('ampache',['ngRoute']);
                 {transformResponse:function(data) {
                   // convert the data to JSON and provide
                   // it to the success function below       
-                  console.log(data);
+                  // console.log(data);
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json( data );
                     return json;
@@ -95,6 +129,9 @@ var app = angular.module('ampache',['ngRoute']);
 
     app.factory('dataFormatter', function(){
         return {
+            auth : function(data){
+                return data.root.auth.__cdata;
+            },
             songs : function(data){
                 var raw = data.root.song;
                 
@@ -203,11 +240,11 @@ var app = angular.module('ampache',['ngRoute']);
         return audio;
     });
  
-    app.controller('playerController', function($scope, player, dataSource, dataFormatter, $sce) {
+    app.controller('playerController', function($scope, player, dataSource, dataFormatter, sharedData, $sce) {
 
-        $scope.player = player;
+        //$scope.player = player;
         
-         
+         console.log(sharedData.get());
         //This is the callback function
         setData = function(data) {
             
@@ -221,7 +258,7 @@ var app = angular.module('ampache',['ngRoute']);
 
         };
              
-        dataSource.get(setData);
+        //dataSource.get(setData);
             
     });
 
